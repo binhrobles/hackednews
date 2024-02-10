@@ -35,6 +35,11 @@ export default function Index() {
             Remix Docs
           </a>
         </li>
+        <li >
+          <a href="/posts" >
+            Blog Posts
+          </a>
+        </li>
       </ul>
     </div>
   );
