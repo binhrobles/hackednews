@@ -19,7 +19,7 @@ export const loader = async () => {
   const bestRes = await fetch('https://hacker-news.firebaseio.com/v0/beststories.json');
   const storyIds: BestStoryIdsRes = await bestRes.json();
   
-  const promises = storyIds.splice(10).map(async (storyId: number) => {
+  const promises = storyIds.slice(0, 10).map(async (storyId: number) => {
     const storyRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`);
     const story: Story = await storyRes.json();
     return story;
@@ -34,7 +34,7 @@ export default function Posts() {
   const { stories } = useLoaderData<typeof loader>();
   return (
     <main>
-      <h1 text-3xl font-bold underline>Hacked News</h1>
+      <h1 className="text-3xl font-bold underline">Hacked News</h1>
       <ul>
         {stories.map(story => (
             <li key={story.id}>
