@@ -55,17 +55,15 @@ const RowItem = ({ story }: { story: Story }) => {
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
   return (
-    <main>
-      <header>
-        <h1 className="text-3xl font-bold underline">Hacked News</h1>
-      </header>
+    <main className="container mx-auto px-2">
       <nav>
+        <h3 className="font-bold underline">Hacked News</h3>
         <Link to="/">home</Link>
-        <Link to="/">new</Link>
-        <Link to="/">past</Link>
-        <Link to="/">comments</Link>
+        <Link to="/new">new</Link>
+        <Link to="/past">past</Link>
+        <Link to="/comments">comments</Link>
       </nav>
-      <section>
+      <section className="container mx-auto px-2">
         <ul>
           {stories.map(story => (
               <li key={story.id}>
