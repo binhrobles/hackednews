@@ -1,8 +1,9 @@
+import { Link } from "@remix-run/react";
 
 const NavBarLineItems = () => (
   ['new', 'past', 'ask', 'show'].map(link => (
       <li key={link}>
-        <a href={link}>{link}</a>
+        <Link to={link}>{link}</Link>
       </li>
     ))
 )
@@ -12,13 +13,13 @@ export default function Navbar() {
         <main className="container mx-auto px-2">
             <div className="navbar">
             <div className="navbar-start">
-                <a href='/' className="btn btn-ghost text-xl">Hacked News</a>
+                <Link to='/' className="btn btn-ghost text-xl">Hacked News</Link>
             </div>
 
             <div className="navbar-end">
                 {/* standard navbar menu */}
                 <ul className="menu hidden sm:menu-horizontal bg-base-100">
-                <NavBarLineItems />
+                    <NavBarLineItems />
                 </ul>
 
                 {/* mobile navbar menu */}
