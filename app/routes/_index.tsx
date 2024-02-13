@@ -55,7 +55,7 @@ const StoryLineItems = ({ stories }: { stories: Story[] }) => (
 
 const NavBarLineItems = () => (
   ['new', 'past', 'ask', 'show'].map(link => (
-      <li>
+      <li key={link}>
         <a href={link}>{link}</a>
       </li>
     ))

@@ -1,4 +1,3 @@
-import { LinksFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -7,11 +6,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import stylesheet from "~/tailwind.css";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
-];
+// https://remix.run/docs/en/main/future/vite#fix-up-css-imports
+import "./tailwind.css";
 
 export default function App() {
   return (
