@@ -36,21 +36,22 @@ export const loader = async () => {
   return { stories };
 };
 
-const RowItem = ({ story }: { story: Story }) => {
-  const postTime = new Date(story.time * 1000);
-
-  return (
-    <>
-      <a>{story.score}</a>
-      <Link to={story.url}>
-        {story.title}
-      </Link>
-      <a> 
-        by {story.by} {`${postTime.toLocaleDateString()} ${postTime.toLocaleTimeString()}`}
-      </a>
-    </>
-  )
-}
+const StoryLineItems = ({ stories }: { stories: Story[] }) => (
+  stories.map(story => {
+    const postTime = new Date(story.time * 1000);
+    return (
+      <li key={story.id}>
+        <a>{story.score}</a>
+        <Link to={story.url}>
+          {story.title}
+        </Link>
+        <a> 
+          by {story.by} {`${postTime.toLocaleDateString()} ${postTime.toLocaleTimeString()}`}
+        </a>
+      </li>
+    );
+  })
+)
 
 const NavBarLineItems = () => (
   ['new', 'past', 'ask', 'show'].map(link => (
@@ -89,15 +90,17 @@ export default function Index() {
 
         </div>
       </div>
+
+      {/* 
+        Technically, the '/' route.
+        The route should dictate which stories are loaded,
+        and thus which stories are passed to the StoryLineItems component.
+      */}
       <section className="container mx-auto px-2">
         <ul>
-          {stories.map(story => (
-              <li key={story.id}>
-                <RowItem 
-                  story={story}
-                />
-              </li>
-          ))}
+          <StoryLineItems 
+            stories={stories}
+          />
         </ul>
       </section>
     </main>
