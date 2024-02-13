@@ -52,17 +52,43 @@ const RowItem = ({ story }: { story: Story }) => {
   )
 }
 
+const NavBarLineItems = () => (
+  ['new', 'past', 'ask', 'show'].map(link => (
+      <li>
+        <a href={link}>{link}</a>
+      </li>
+    ))
+)
+
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
   return (
     <main className="container mx-auto px-2">
-      <nav>
-        <h3 className="font-bold underline">Hacked News</h3>
-        <Link to="/">home</Link>
-        <Link to="/new">new</Link>
-        <Link to="/past">past</Link>
-        <Link to="/comments">comments</Link>
-      </nav>
+      <div className="navbar">
+        <div className="navbar-start">
+          <a href='/' className="btn btn-ghost text-xl">Hacked News</a>
+        </div>
+
+        <div className="navbar-end">
+          {/* standard navbar menu */}
+          <ul className="menu hidden sm:menu-horizontal bg-base-100">
+            <NavBarLineItems />
+          </ul>
+
+          {/* mobile navbar menu */}
+          <details className="dropdown dropdown-end sm:hidden">
+            <summary className="btn btn-ghost rounded-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+              </svg>
+            </summary>
+            <ul className="dropdown-content menu bg-base-100 rounded-box shadow">
+              <NavBarLineItems />
+            </ul>
+          </details>
+
+        </div>
+      </div>
       <section className="container mx-auto px-2">
         <ul>
           {stories.map(story => (
