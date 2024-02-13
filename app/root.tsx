@@ -9,6 +9,8 @@ import {
 // https://remix.run/docs/en/main/future/vite#fix-up-css-imports
 import "./tailwind.css";
 
+import Navbar from "./components/Navbar"; // Import the Navbar component
+
 export default function App() {
   return (
     <html lang="en">
@@ -19,6 +21,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Navbar />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
