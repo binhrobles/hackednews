@@ -31,7 +31,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="container mx-auto px-2">
         <Navbar />
         <Outlet />
         <ScrollRestoration />

@@ -12,7 +12,7 @@ const NavBarLineItems = () =>
 
 export default function Navbar() {
   return (
-    <main className="container mx-auto px-2">
+    <>
       {/* define form element we'll use to send query params to url */}
       <Form id="view-form" method="get" />
 
@@ -58,6 +58,6 @@ export default function Navbar() {
           </details>
         </div>
       </div>
-    </main>
+    </>
   );
 }

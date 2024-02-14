@@ -5,7 +5,7 @@ const hackerNewsBaseUrl = 'https://hacker-news.firebaseio.com/v0';
 
 const viewToHackerNewsPath: Record<string, string> = {
   ask: 'askstories',
-  home: 'beststories',
+  home: 'topstories',
   new: 'newstories',
   show: 'showstories',
   jobs: 'jobstories',
