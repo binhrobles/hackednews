@@ -10,4 +10,4 @@ export type Story = {
   title: string;
   type: string;
   url: string;
-}
+};

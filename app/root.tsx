@@ -1,21 +1,21 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from '@remix-run/node';
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from '@remix-run/react';
 
 // https://remix.run/docs/en/main/future/vite#fix-up-css-imports
-import "./tailwind.css";
+import './tailwind.css';
 
-import Navbar from "~/components/Navbar";
+import Navbar from '~/components/Navbar';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Hacked News" },
-    { name: "description", content: "Another Hacker News Remix" },
+    { title: 'Hacked News' },
+    { name: 'description', content: 'Another Hacker News Remix' },
   ];
 };
 
@@ -24,7 +24,10 @@ export default function App() {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+        />
         <Meta />
         <Links />
       </head>
