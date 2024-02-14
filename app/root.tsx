@@ -1,3 +1,4 @@
+import type { MetaFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -9,7 +10,14 @@ import {
 // https://remix.run/docs/en/main/future/vite#fix-up-css-imports
 import "./tailwind.css";
 
-import Navbar from "~/components/Navbar"; // Import the Navbar component
+import Navbar from "~/components/Navbar";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Hacked News" },
+    { name: "description", content: "Another Hacker News Remix" },
+  ];
+};
 
 export default function App() {
   return (

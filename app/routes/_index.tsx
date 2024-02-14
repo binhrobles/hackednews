@@ -1,14 +1,9 @@
-import type { MetaFunction } from "@remix-run/node";
+// app/_index.tsx acts as the default route for the app
+// In our case, this will render a list of the top 10 stories from Hacker News
+
 import { useLoaderData } from "@remix-run/react";
 import { Story, StoryIdsResponse } from "~/types";
 import StoryList from "~/components/StoryList";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Hacked News" },
-    { name: "description", content: "Another Hacker News Remix" },
-  ];
-};
 
 export const loader = async () => {
   const bestRes = await fetch('https://hacker-news.firebaseio.com/v0/beststories.json');
