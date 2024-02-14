@@ -68,7 +68,7 @@ export default function Index() {
             const timeDiff = getTimeDiff(story.time);
 
             return (
-              <tr className="border-0">
+              <tr key={story.id} className="border-0">
                 <th className="p-0">{story.score}</th>
                 <td className="py-2">
                   <Link className="text-base" to={story.url}>
@@ -87,10 +87,10 @@ export default function Index() {
         </tbody>
       </table>
 
-      <div className="join ">
+      <div>
         {page > 1 && (
           <button
-            className="btn btn-sm btn-ghost join-item"
+            className="btn btn-sm btn-ghost"
             onClick={() => setPage(page - 1)}
           >
             prev
@@ -98,7 +98,7 @@ export default function Index() {
         )}
         {page < 10 && (
           <button
-            className="btn btn-sm btn-ghost join-item"
+            className="btn btn-sm btn-ghost"
             onClick={() => setPage(page + 1)}
           >
             next

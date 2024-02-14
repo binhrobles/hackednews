@@ -2,12 +2,15 @@ import { Form } from '@remix-run/react';
 
 const NavBarLineItems = () =>
   ['new', 'ask', 'show', 'jobs'].map((link) => (
-    <li key={link}>
-      {/* add a button for each link in the navbar tied to view-form */}
-      <button form="view-form" name="view" value={link}>
-        {link}
-      </button>
-    </li>
+    <button
+      key={link}
+      className="btn btn-sm btn-ghost"
+      form="view-form"
+      name="view"
+      value={link}
+    >
+      {link}
+    </button>
   ));
 
 export default function Navbar() {
@@ -37,8 +40,8 @@ export default function Navbar() {
 
         <div className="navbar-end sm:hidden">
           {/* mobile navbar menu */}
-          <details className="dropdown dropdown-end">
-            <summary className="btn btn-ghost rounded-btn">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} className="btn btn-ghost rounded-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -53,11 +56,13 @@ export default function Navbar() {
                   d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
                 />
               </svg>
-            </summary>
-            <ul className="dropdown-content menu bg-base-100 rounded-box shadow">
-              <NavBarLineItems />
-            </ul>
-          </details>
+            </div>
+            <div tabIndex={0} className="dropdown-content">
+              <ul className="menu bg-base-100 rounded-box shadow">
+                <NavBarLineItems />
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </>
