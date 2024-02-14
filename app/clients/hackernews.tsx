@@ -1,6 +1,6 @@
 import { Story, StoryIdsResponse } from '~/types';
 
-const STORIES_PER_PAGE = 10;
+const STORIES_PER_PAGE = 30;
 const hackerNewsBaseUrl = 'https://hacker-news.firebaseio.com/v0';
 
 const viewToHackerNewsPath: Record<string, string> = {
