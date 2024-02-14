@@ -1,7 +1,11 @@
 // app/_index.tsx acts as the default route for the app
 // In our case, this will render a list of the top 10 stories from Hacker News
 
-import { useLoaderData, Link } from '@remix-run/react';
+import {
+  useLoaderData,
+  Link,
+  useSearchParams,
+} from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
 import HNClient from '~/clients/hackernews';
 
@@ -46,6 +50,15 @@ const getTimeDiff = (time: number) => {
 
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get('page')) || 1;
+
+  const setPage = (targetPage: number) => {
+    setSearchParams((prev) => {
+      prev.set('page', String(targetPage));
+      return prev;
+    });
+  };
 
   return (
     <section className="container mx-auto px-4">
@@ -55,16 +68,16 @@ export default function Index() {
             const timeDiff = getTimeDiff(story.time);
 
             return (
-              <tr>
-                <th>{story.score}</th>
-                <td>
-                  <Link to={story.url} className="text-lg">
+              <tr className="border-0">
+                <th className="p-0">{story.score}</th>
+                <td className="py-2">
+                  <Link className="text-base" to={story.url}>
                     {story.title}
                   </Link>{' '}
                   {story.url
                     ? `(${new URL(story.url).hostname})`
                     : ''}
-                  <div>
+                  <div className="text-xs">
                     submitted {timeDiff} by {story.by}
                   </div>
                 </td>
@@ -73,6 +86,25 @@ export default function Index() {
           })}
         </tbody>
       </table>
+
+      <div className="join ">
+        {page > 1 && (
+          <button
+            className="btn btn-sm btn-ghost join-item"
+            onClick={() => setPage(page - 1)}
+          >
+            prev
+          </button>
+        )}
+        {page < 10 && (
+          <button
+            className="btn btn-sm btn-ghost join-item"
+            onClick={() => setPage(page + 1)}
+          >
+            next
+          </button>
+        )}
+      </div>
     </section>
   );
 }

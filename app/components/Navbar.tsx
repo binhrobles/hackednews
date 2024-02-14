@@ -16,7 +16,7 @@ export default function Navbar() {
       {/* define form element we'll use to send query params to url */}
       <Form id="view-form" method="get" />
 
-      <div className="navbar">
+      <div className="navbar p-0">
         <div className="navbar-start">
           <button
             form="view-form"
@@ -28,14 +28,16 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="navbar-end">
+        <div className="navbar-center hidden sm:flex">
           {/* standard navbar menu */}
-          <ul className="menu hidden sm:menu-horizontal">
+          <ul className="menu menu-horizontal">
             <NavBarLineItems />
           </ul>
+        </div>
 
+        <div className="navbar-end sm:hidden">
           {/* mobile navbar menu */}
-          <details className="dropdown dropdown-end sm:hidden">
+          <details className="dropdown dropdown-end">
             <summary className="btn btn-ghost rounded-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
