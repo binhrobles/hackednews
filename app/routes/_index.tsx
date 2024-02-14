@@ -61,7 +61,7 @@ export default function Index() {
   };
 
   return (
-    <section className="container mx-auto px-4">
+    <section className="container mx-auto px-4 bg-secondary">
       <table className="table">
         <tbody>
           {stories.map((story) => {
@@ -69,7 +69,7 @@ export default function Index() {
 
             return (
               <tr key={story.id} className="border-0">
-                <th className="p-0">{story.score}</th>
+                <th className="p-0 text-accent">{story.score}</th>
                 <td className="py-2">
                   <Link className="text-base" to={story.url}>
                     {story.title}
@@ -77,7 +77,7 @@ export default function Index() {
                   {story.url
                     ? `(${new URL(story.url).hostname})`
                     : ''}
-                  <div className="text-xs">
+                  <div className="text-xs text-accent">
                     submitted {timeDiff} by {story.by}
                   </div>
                 </td>
@@ -90,7 +90,7 @@ export default function Index() {
       <div>
         {page > 1 && (
           <button
-            className="btn btn-sm btn-ghost"
+            className="btn btn-sm btn-ghost text-accent"
             onClick={() => setPage(page - 1)}
           >
             prev
@@ -98,7 +98,7 @@ export default function Index() {
         )}
         {page < 10 && (
           <button
-            className="btn btn-sm btn-ghost"
+            className="btn btn-sm btn-ghost text-accent"
             onClick={() => setPage(page + 1)}
           >
             next

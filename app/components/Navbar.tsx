@@ -19,7 +19,7 @@ export default function Navbar() {
       {/* define form element we'll use to send query params to url */}
       <Form id="view-form" method="get" />
 
-      <div className="navbar p-0">
+      <div className="navbar p-0 bg-primary">
         <div className="navbar-start">
           <button
             form="view-form"
