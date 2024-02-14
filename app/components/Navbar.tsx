@@ -1,15 +1,10 @@
 import { Form } from '@remix-run/react';
 
 const NavBarLineItems = () =>
-  ['new', 'past', 'ask', 'show'].map((link) => (
+  ['new', 'ask', 'show', 'jobs'].map((link) => (
     <li key={link}>
       {/* add a button for each link in the navbar tied to view-form */}
-      <button
-        form="view-form"
-        name="view"
-        value={link}
-        className="button"
-      >
+      <button form="view-form" name="view" value={link}>
         {link}
       </button>
     </li>
@@ -35,7 +30,7 @@ export default function Navbar() {
 
         <div className="navbar-end">
           {/* standard navbar menu */}
-          <ul className="menu hidden sm:menu-horizontal bg-base-100">
+          <ul className="menu hidden sm:menu-horizontal">
             <NavBarLineItems />
           </ul>
 
