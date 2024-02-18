@@ -4,6 +4,8 @@ export default {
   content: ['./app/**/*.{ts,tsx}'],
   daisyui: {
     themes: [
+      'coffee',
+      'dark',
       {
         hackernews: {
           primary: '#ff6600',

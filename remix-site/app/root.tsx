@@ -34,7 +34,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="container mx-auto px-2">
+      <body className="container mx-auto px-8">
         <Navbar />
         <Outlet />
         <footer className="footer footer-center p-5">
