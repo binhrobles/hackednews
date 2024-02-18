@@ -3,18 +3,7 @@ import type { Config } from 'tailwindcss';
 export default {
   content: ['./app/**/*.{ts,tsx}'],
   daisyui: {
-    themes: [
-      'coffee',
-      'dark',
-      {
-        hackernews: {
-          primary: '#ff6600',
-          secondary: '#f6f6ef',
-          accent: '#828282',
-          'base-100': '#ffffff',
-        },
-      },
-    ],
+    themes: ['business'],
   },
   theme: {
     extend: {},

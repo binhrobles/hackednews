@@ -4,7 +4,7 @@ const NavBarLineItems = () =>
   ['new', 'ask', 'show', 'jobs'].map((link) => (
     <button
       key={link}
-      className="btn btn-sm"
+      className="btn btn-ghost btn-sm"
       form="view-form"
       name="view"
       value={link}
@@ -41,7 +41,7 @@ export default function Navbar() {
 
           {/* mobile navbar menu */}
           <div className="dropdown dropdown-end sm:hidden">
-            <div tabIndex={0} className="btn ghost rounded-btn">
+            <div tabIndex={0} className="btn btn-ghost rounded-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

@@ -61,31 +61,49 @@ export default function Index() {
   };
 
   return (
-    <section className="container mx-auto px-4 bg-secondary">
-      <table className="table">
-        <tbody>
-          {stories.map((story) => {
-            const timeDiff = getTimeDiff(story.time);
+    <section className="container mx-auto px-4">
+      <ul>
+        {stories.map((story) => {
+          const timeDiff = getTimeDiff(story.time);
 
-            return (
-              <tr key={story.id} className="border-0">
-                <th className="p-0 text-accent">{story.score}</th>
-                <td className="py-2">
-                  <Link className="text-base" to={story.url}>
-                    {story.title}
-                  </Link>{' '}
-                  {story.url
-                    ? `(${new URL(story.url).hostname})`
-                    : ''}
-                  <div className="text-xs text-accent">
-                    submitted {timeDiff} by {story.by}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          return (
+            <div
+              key={story.id}
+              className="py-2 flex flex-col border-secondary border-solid border-b-2 last:border-b-0"
+            >
+              <span>
+                <Link className="text-base" to={story.url}>
+                  {story.title}
+                </Link>{' '}
+                {story.url ? `(${new URL(story.url).hostname})` : ''}
+              </span>
+              <div className="text-xs flex space-x-2">
+                <span className="flex text-accent">
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.6 13.7A2 2 0 0 0 7 17h10a2 2 0 0 0 1.5-3.3l-4.9-5.9a2 2 0 0 0-3 0l-5 6Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+
+                  {story.score}
+                </span>
+
+                <span>
+                  submitted {timeDiff} by {story.by}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </ul>
 
       <div>
         {page > 1 && (
