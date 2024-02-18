@@ -87,9 +87,9 @@ export default function Index() {
                     viewBox="0 0 24 24"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M5.6 13.7A2 2 0 0 0 7 17h10a2 2 0 0 0 1.5-3.3l-4.9-5.9a2 2 0 0 0-3 0l-5 6Z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
 
