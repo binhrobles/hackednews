@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import {
   Links,
   Meta,
@@ -7,10 +7,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-// https://remix.run/docs/en/main/future/vite#fix-up-css-imports
-import './tailwind.css';
+import styles from './tailwind.css';
 
 import Navbar from '~/components/Navbar';
+
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: styles },
+];
 
 export const meta: MetaFunction = () => {
   return [
