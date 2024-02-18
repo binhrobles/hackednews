@@ -99,16 +99,22 @@ export default function Index() {
                 <span>
                   submitted {timeDiff} by {story.by}
                 </span>
+                <span>|</span>
+                <a
+                  href={`https://news.ycombinator.com/item?id=${story.id}`}
+                >
+                  {story.descendants} comments
+                </a>
               </div>
             </div>
           );
         })}
       </ul>
 
-      <div>
+      <div className="flex space-x-2">
         {page > 1 && (
           <button
-            className="btn btn-sm btn-ghost text-accent"
+            className="btn btn-sm btn-outline btn-secondary"
             onClick={() => setPage(page - 1)}
           >
             prev
@@ -116,7 +122,7 @@ export default function Index() {
         )}
         {page < 10 && (
           <button
-            className="btn btn-sm btn-ghost text-accent"
+            className="btn btn-sm btn-outline btn-secondary"
             onClick={() => setPage(page + 1)}
           >
             next
