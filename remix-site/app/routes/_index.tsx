@@ -8,6 +8,7 @@ import {
 } from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
 import HNClient from '~/clients/hackernews';
+import { getTimeDiffString } from '~/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // parse the search params for `?view=`
@@ -24,30 +25,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 };
 
-const getTimeDiff = (time: number) => {
-  const timeDiff = new Date().getTime() - time * 1000;
-
-  let value: number;
-  let unit: string;
-  switch (true) {
-    case timeDiff < 1000 * 60 * 60:
-      value = Math.floor(timeDiff / (1000 * 60));
-      unit = 'minute';
-      break;
-    case timeDiff < 1000 * 60 * 60 * 24:
-      value = Math.floor(timeDiff / (1000 * 60 * 60));
-      unit = 'hour';
-      break;
-    default:
-      value = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-      unit = 'day';
-      break;
-  }
-  if (value > 1) unit += 's';
-
-  return `${value} ${unit} ago`;
-};
-
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,10 +38,10 @@ export default function Index() {
   };
 
   return (
-    <section className="container mx-auto px-4">
+    <section className="container mx-auto md:px-4">
       <ul>
         {stories.map((story) => {
-          const timeDiff = getTimeDiff(story.time);
+          const timeDiff = getTimeDiffString(story.time);
 
           return (
             <div
@@ -96,9 +73,7 @@ export default function Index() {
                   {story.score}
                 </span>
 
-                <span>
-                  submitted {timeDiff} by {story.by}
-                </span>
+                <span>submitted {timeDiff}</span>
                 <span>|</span>
                 <a
                   href={`https://news.ycombinator.com/item?id=${story.id}`}
