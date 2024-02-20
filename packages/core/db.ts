@@ -4,8 +4,9 @@ import {
   DynamoDBDocumentClient,
   BatchWriteCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { Table } from 'sst/node/table';
 
-import { STORY_TABLE_NAME, REGION } from 'shared/constants';
+import { REGION } from 'shared/constants';
 import { Story } from 'shared/types';
 import { chunker } from 'shared/utils';
 
@@ -21,7 +22,7 @@ export const putStories = async (stories: Story[]) => {
     await client.send(
       new BatchWriteCommand({
         RequestItems: {
-          [STORY_TABLE_NAME]: chunk.map((story) => ({
+          [Table.HackedNewsContent.tableName]: chunk.map((story) => ({
             PutRequest: {
               Item: story,
             },

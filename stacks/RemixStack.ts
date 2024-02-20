@@ -1,8 +1,7 @@
-import { STORY_TABLE_NAME } from '../shared/constants';
 import { Cron, Table, RemixSite, StackContext } from 'sst/constructs';
 
 export function RemixStack({ stack }: StackContext) {
-  const table = new Table(stack, STORY_TABLE_NAME, {
+  const table = new Table(stack, 'HackedNewsContent', {
     fields: {
       id: 'number',
       by: 'string',
@@ -23,7 +22,7 @@ export function RemixStack({ stack }: StackContext) {
   });
 
   const liveDataFetch = new Cron(stack, 'LiveDataFetch', {
-    schedule: 'rate(2 minutes)',
+    schedule: 'rate(30 minutes)',
     job: 'packages/functions/liveDataFetch.handler',
   });
   liveDataFetch.bind([table]);
