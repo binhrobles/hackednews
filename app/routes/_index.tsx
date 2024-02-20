@@ -4,13 +4,20 @@ import {
   useSearchParams,
 } from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
-import { fetchRecentStories } from '~/clients/db';
+import {
+  fetchRecentStories,
+  fetchStoriesByMonth,
+} from '~/clients/db';
 import { RenderableStory } from 'shared/types';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const month = url.searchParams.get('month');
+
   try {
-    // fetch stories from desired period
-    const stories = await fetchRecentStories();
+    const stories = month
+      ? await fetchStoriesByMonth(month)
+      : await fetchRecentStories();
     return json({ stories });
   } catch (e) {
     console.error(e);
