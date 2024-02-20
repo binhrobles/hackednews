@@ -1,4 +1,7 @@
-import { Story, StoryIdsResponse } from '~/types';
+import {
+  HNStoryResponse,
+  StoryIdsResponse,
+} from '../../shared/types';
 
 const STORIES_PER_PAGE = 30;
 const hackerNewsBaseUrl = 'https://hacker-news.firebaseio.com/v0';
@@ -36,7 +39,7 @@ const fetchStories = async ({
       const storyRes = await fetch(
         `${hackerNewsBaseUrl}/item/${storyId}.json`
       );
-      const story: Story = await storyRes.json();
+      const story: HNStoryResponse = await storyRes.json();
       return story;
     });
 

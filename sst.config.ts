@@ -1,11 +1,12 @@
 import { SSTConfig } from 'sst';
 import { RemixStack } from './stacks/RemixStack';
+import { REGION } from './shared/constants';
 
 export default {
   config(_input) {
     return {
       name: 'hackednews',
-      region: 'us-west-2',
+      region: REGION,
     };
   },
   stacks(app) {
