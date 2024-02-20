@@ -23,8 +23,8 @@ export function RemixStack({ stack }: StackContext) {
   });
 
   new Cron(stack, 'LiveDataFetch', {
-    schedule: 'rate(10 minutes)',
-    job: 'packages/functions/src/livedata.handler',
+    schedule: 'rate(2 minutes)',
+    job: 'packages/functions/src/liveDataFetch.handler',
   });
 
   // Create the Remix site
