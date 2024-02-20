@@ -7,7 +7,8 @@ import {
 import { Table } from 'sst/node/table';
 
 import { REGION } from 'shared/constants';
-import { Story } from 'shared/types';
+import { RenderableStory, Story } from 'shared/types';
+import { getTimeDiffString } from 'shared/utils';
 
 // Create a DynamoDB client
 const ddbClient = new DynamoDBClient({ region: REGION });
@@ -33,5 +34,16 @@ export const fetchRecentStories = async () => {
       },
     })
   );
-  return Items as Story[];
+
+  const stories = Items as Story[];
+  const renderableStories: RenderableStory[] = stories.map(
+    (story) => {
+      return {
+        ...story,
+        timeDiff: getTimeDiffString(story.time),
+      };
+    }
+  );
+
+  return renderableStories;
 };
