@@ -18,12 +18,12 @@ export type HNStoryResponse = {
 export type HCKRStoryResponse = {
   submitter: string;
   date: number; // 1708300715,
-  comments: number; // 13
+  comments?: number | null; // 13
   type: string;
   link_text: string; // "Open Source Games",
   time: string; // "1708298421",
   link: string;
-  points: number; // 45;
+  points?: number | null; // 45;
   id: string; // '39424566';
 };
 
