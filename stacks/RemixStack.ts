@@ -22,10 +22,11 @@ export function RemixStack({ stack }: StackContext) {
     },
   });
 
-  new Cron(stack, 'LiveDataFetch', {
+  const liveDataFetch = new Cron(stack, 'LiveDataFetch', {
     schedule: 'rate(2 minutes)',
-    job: 'packages/functions/src/liveDataFetch.handler',
+    job: 'packages/functions/liveDataFetch.handler',
   });
+  liveDataFetch.bind([table]);
 
   // Create the Remix site
   const site = new RemixSite(stack, 'Site', { bind: [table] });
