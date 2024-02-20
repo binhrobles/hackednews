@@ -5,8 +5,7 @@ import {
 } from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
 import { fetchRecentStories } from '~/clients/db';
-import { getTimeDiffString } from 'shared/utils';
-import { Story } from 'shared/types';
+import { RenderableStory } from 'shared/types';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -19,7 +18,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 };
 
-const scoreSort = (a: Story, b: Story) => b.score - a.score;
+const scoreSort = (a: RenderableStory, b: RenderableStory) =>
+  b.score - a.score;
 
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
