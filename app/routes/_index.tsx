@@ -1,23 +1,17 @@
-// app/_index.tsx acts as the default route for the app
-// In our case, this will render a list of the top 10 stories from Hacker News
-
 import {
   useLoaderData,
   Link,
   useSearchParams,
 } from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
-import HNClient from '~/clients/hackernews';
+import { fetchRecentStories } from '~/clients/db';
 import { getTimeDiffString } from '~/utils';
+import { Story } from 'shared/types';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // parse the search params for `?view=`
-  const url = new URL(request.url);
-  const view = url.searchParams.get('view') || 'home';
-  const page = Number(url.searchParams.get('page')) || 1;
-
   try {
-    const stories = await HNClient.fetchStories({ view, page });
+    // fetch stories from desired period
+    const stories = await fetchRecentStories();
     return json({ stories });
   } catch (e) {
     console.error(e);
@@ -25,10 +19,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 };
 
+const scoreSort = (a: Story, b: Story) => b.score - a.score;
+
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
+
+  const scoreSortedStories = stories.sort(scoreSort);
 
   const setPage = (targetPage: number) => {
     setSearchParams((prev) => {
@@ -40,7 +38,7 @@ export default function Index() {
   return (
     <section className="container mx-auto md:px-4">
       <ul>
-        {stories.map((story) => {
+        {scoreSortedStories.map((story) => {
           const timeDiff = getTimeDiffString(story.time);
 
           return (
@@ -78,7 +76,7 @@ export default function Index() {
                 <a
                   href={`https://news.ycombinator.com/item?id=${story.id}`}
                 >
-                  {story.descendants} comments
+                  {story.comments} comments
                 </a>
               </div>
             </div>
