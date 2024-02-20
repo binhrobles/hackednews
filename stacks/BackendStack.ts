@@ -1,4 +1,4 @@
-import { Cron, Table, StackContext } from 'sst/constructs';
+import { Cron, Function, Table, StackContext } from 'sst/constructs';
 
 export function BackendStack({ stack }: StackContext) {
   const table = new Table(stack, 'HackedNewsContent', {
@@ -27,6 +27,16 @@ export function BackendStack({ stack }: StackContext) {
     job: 'packages/functions/liveDataFetch.handler',
   });
   liveDataFetch.bind([table]);
+
+  const historicalDataFetch = new Function(
+    stack,
+    'HistoricalDataFetch',
+    {
+      handler: 'packages/functions/historicalDataFetch.handler',
+      timeout: 300,
+    }
+  );
+  historicalDataFetch.bind([table]);
 
   return { table };
 }

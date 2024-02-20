@@ -1,9 +1,10 @@
 import {
-  fetchStories,
+  fetchTopStories,
   HNStoryResponse,
 } from 'packages/core/hackernews';
 import { putStories } from 'packages/core/db';
 import { Story } from 'shared/types';
+import { dateToYearMonth } from 'shared/utils';
 
 const formatStories = (stories: HNStoryResponse[]): Story[] => {
   return stories.map((story) => ({
@@ -15,15 +16,13 @@ const formatStories = (stories: HNStoryResponse[]): Story[] => {
     title: story.title,
     url: story.url,
     by: story.by,
-    'year-month': new Date(story.time * 1000)
-      .toISOString()
-      .slice(0, 7),
+    'year-month': dateToYearMonth(new Date(story.time * 1000)),
   }));
 };
 
 // fetches top stories from hacker news and puts them in the database
 export async function handler() {
-  const storyResponses: HNStoryResponse[] = await fetchStories();
+  const storyResponses: HNStoryResponse[] = await fetchTopStories();
   console.log(`Received ${storyResponses.length} stories from HN`);
 
   const stories = formatStories(storyResponses);

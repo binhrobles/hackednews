@@ -30,3 +30,11 @@ export const getTimeDiffString = (time: number): string => {
 
   return `${value} ${unit} ago`;
 };
+
+export const dateToYYYYMMDD = (date: Date): string => {
+  return date.toISOString().slice(0, 10).replace(/-/g, '');
+}
+
+export const dateToYearMonth = (date: Date): string => {
+  return date.toISOString().slice(0, 7);
+}
