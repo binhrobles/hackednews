@@ -33,8 +33,16 @@ export const getTimeDiffString = (time: number): string => {
 
 export const dateToYYYYMMDD = (date: Date): string => {
   return date.toISOString().slice(0, 10).replace(/-/g, '');
-}
+};
 
 export const dateToYearMonth = (date: Date): string => {
   return date.toISOString().slice(0, 7);
-}
+};
+
+export const monthToReadableString = (month: string): string => {
+  return new Date(month).toLocaleDateString(undefined, {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+  });
+};

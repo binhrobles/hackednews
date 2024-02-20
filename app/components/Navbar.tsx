@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import { Form, useSearchParams } from '@remix-run/react';
-import { dateToYearMonth } from 'shared/utils';
+import { dateToYearMonth, monthToReadableString } from 'shared/utils';
 
 export default function Navbar() {
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const month = searchParams.get('month');
+
+  const [display, setDisplay] = useState(
+    month ? monthToReadableString(month) : 'Today'
+  );
 
   return (
     <>
@@ -22,7 +28,7 @@ export default function Navbar() {
         <div className="navbar-end">
           <div className="dropdown dropdown-end">
             <button tabIndex={0} className="btn btn-ghost text-xl">
-              Feb 2024
+              {display}
             </button>
             <ul
               tabIndex={0}
@@ -35,6 +41,15 @@ export default function Navbar() {
                 name="month"
                 min="2020-01"
                 max={dateToYearMonth(new Date())}
+                onChange={(event) => {
+                  setDisplay(
+                    monthToReadableString(event.target.value)
+                  );
+                  setSearchParams((prev) => {
+                    prev.set('month', event.target.value);
+                    return prev;
+                  });
+                }}
               />
             </ul>
           </div>
