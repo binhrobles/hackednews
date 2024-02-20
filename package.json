@@ -11,6 +11,7 @@
     "sst:build": "sst build",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/index.js",
+    "diff": "sst diff",
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",

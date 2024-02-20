@@ -1,0 +1,32 @@
+import { Cron, Table, StackContext } from 'sst/constructs';
+
+export function BackendStack({ stack }: StackContext) {
+  const table = new Table(stack, 'HackedNewsContent', {
+    fields: {
+      id: 'number',
+      score: 'number',
+      time: 'number',
+      type: 'string',
+      'year-month': 'string',
+    },
+    primaryIndex: { partitionKey: 'id' },
+    globalIndexes: {
+      StoriesByTimeIndex: {
+        partitionKey: 'type', // just use story
+        sortKey: 'time',
+      },
+      TopStoriesByMonthIndex: {
+        partitionKey: 'year-month',
+        sortKey: 'score',
+      },
+    },
+  });
+
+  const liveDataFetch = new Cron(stack, 'LiveDataFetch', {
+    schedule: 'rate(30 minutes)',
+    job: 'packages/functions/liveDataFetch.handler',
+  });
+  liveDataFetch.bind([table]);
+
+  return { table };
+}

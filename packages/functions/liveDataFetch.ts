@@ -15,6 +15,9 @@ const formatStories = (stories: HNStoryResponse[]): Story[] => {
     title: story.title,
     url: story.url,
     by: story.by,
+    'year-month': new Date(story.time * 1000)
+      .toISOString()
+      .slice(0, 7),
   }));
 };
 

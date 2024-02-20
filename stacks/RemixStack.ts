@@ -1,31 +1,8 @@
-import { Cron, Table, RemixSite, StackContext } from 'sst/constructs';
+import { RemixSite, StackContext, use } from 'sst/constructs';
+import { BackendStack } from './BackendStack';
 
 export function RemixStack({ stack }: StackContext) {
-  const table = new Table(stack, 'HackedNewsContent', {
-    fields: {
-      id: 'number',
-      by: 'string',
-      comments: 'number',
-      score: 'number',
-      time: 'number',
-      title: 'string',
-      type: 'string',
-      url: 'string',
-    },
-    primaryIndex: { partitionKey: 'id' },
-    globalIndexes: {
-      TopStoriesByTimeIndex: {
-        partitionKey: 'type', // just use story
-        sortKey: 'time',
-      },
-    },
-  });
-
-  const liveDataFetch = new Cron(stack, 'LiveDataFetch', {
-    schedule: 'rate(30 minutes)',
-    job: 'packages/functions/liveDataFetch.handler',
-  });
-  liveDataFetch.bind([table]);
+  const { table } = use(BackendStack);
 
   // Create the Remix site
   const site = new RemixSite(stack, 'Site', { bind: [table] });

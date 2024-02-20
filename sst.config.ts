@@ -1,15 +1,16 @@
 import { SSTConfig } from 'sst';
+import { BackendStack } from './stacks/BackendStack';
 import { RemixStack } from './stacks/RemixStack';
-import { REGION } from './shared/constants';
 
 export default {
   config(_input) {
     return {
       name: 'hackednews',
-      region: REGION,
+      region: process.env.AWS_REGION || 'us-east-1',
     };
   },
   stacks(app) {
+    app.stack(BackendStack);
     app.stack(RemixStack);
   },
 } satisfies SSTConfig;

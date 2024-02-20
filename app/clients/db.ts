@@ -6,12 +6,13 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { Table } from 'sst/node/table';
 
-import { REGION } from 'shared/constants';
 import { RenderableStory, Story } from 'shared/types';
 import { getTimeDiffString } from 'shared/utils';
 
 // Create a DynamoDB client
-const ddbClient = new DynamoDBClient({ region: REGION });
+const ddbClient = new DynamoDBClient({
+  region: process.env.AWS_REGION || 'us-east-1',
+});
 const client = DynamoDBDocumentClient.from(ddbClient);
 
 export const fetchRecentStories = async () => {
@@ -22,7 +23,7 @@ export const fetchRecentStories = async () => {
   const { Items }: QueryCommandOutput = await client.send(
     new QueryCommand({
       TableName: Table.HackedNewsContent.tableName,
-      IndexName: 'TopStoriesByTimeIndex',
+      IndexName: 'StoriesByTimeIndex',
       KeyConditionExpression: '#type = :type AND #time > :time',
       ExpressionAttributeValues: {
         ':type': 'story',

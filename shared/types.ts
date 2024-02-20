@@ -1,9 +1,10 @@
 export type Story = {
   id: number; // PK
-  type: string; // GSI PK
-  time: number; // unix timestamp, SK
+  type: string; // Recents GSI PK
+  time: number; // unix timestamp, Recents SK
+  'year-month': string; // YYYY-MM, TopByMonth GSI PK
   comments: number;
-  score: number;
+  score: number; // TopByMonth GSI SK
   title: string;
   url: string;
   by: string;
