@@ -15,3 +15,5 @@ build
 
 # local env files
 .env*.local# sst
+
+*.code-workspace

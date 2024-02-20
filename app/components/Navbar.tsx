@@ -1,19 +1,9 @@
-import { Form } from '@remix-run/react';
-
-const NavBarLineItems = () =>
-  ['new', 'ask', 'show', 'jobs'].map((link) => (
-    <button
-      key={link}
-      className="btn btn-ghost btn-sm"
-      form="view-form"
-      name="view"
-      value={link}
-    >
-      {link}
-    </button>
-  ));
+import { Form, useSearchParams } from '@remix-run/react';
+import { dateToYearMonth } from 'shared/utils';
 
 export default function Navbar() {
+  const [_, setSearchParams] = useSearchParams();
+
   return (
     <>
       {/* define form element we'll use to send query params to url */}
@@ -22,46 +12,30 @@ export default function Navbar() {
       <header className="navbar p-0">
         <div className="navbar-start">
           <button
-            form="view-form"
-            name="view"
-            value="home"
             className="btn btn-ghost text-xl"
+            onClick={() => setSearchParams(undefined)}
           >
             Hacked News
           </button>
         </div>
 
         <div className="navbar-end">
-          <div className="hidden sm:flex">
-            {/* standard navbar menu */}
-            <ul className="menu menu-horizontal">
-              <NavBarLineItems />
-            </ul>
-          </div>
-
-          {/* mobile navbar menu */}
-          <div className="dropdown dropdown-end sm:hidden">
-            <div tabIndex={0} className="btn btn-ghost rounded-btn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
-                />
-              </svg>
-            </div>
+          <div className="dropdown dropdown-end">
+            <button tabIndex={0} className="btn btn-ghost text-xl">
+              Feb 2024
+            </button>
             <ul
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box shadow z-[1]"
             >
-              <NavBarLineItems />
+              <input
+                className="input input-sm input-bordered"
+                type="month"
+                form="view-form"
+                name="month"
+                min="2020-01"
+                max={dateToYearMonth(new Date())}
+              />
             </ul>
           </div>
         </div>
