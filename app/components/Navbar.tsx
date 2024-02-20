@@ -26,14 +26,14 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-end">
-          <div className="dropdown dropdown-end">
-            <button tabIndex={0} className="btn btn-ghost text-xl">
+          <details
+            id="month-dropdown"
+            className="dropdown dropdown-end"
+          >
+            <summary className="btn btn-ghost text-xl">
               {display}
-            </button>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box shadow z-[1]"
-            >
+            </summary>
+            <div className="dropdown-content bg-base-100 rounded-box shadow z-[1]">
               <input
                 className="input input-sm input-bordered"
                 type="month"
@@ -42,6 +42,9 @@ export default function Navbar() {
                 min="2020-01"
                 max={dateToYearMonth(new Date())}
                 onChange={(event) => {
+                  document
+                    .getElementById('month-dropdown')
+                    ?.removeAttribute('open');
                   setDisplay(
                     monthToReadableString(event.target.value)
                   );
@@ -51,8 +54,8 @@ export default function Navbar() {
                   });
                 }}
               />
-            </ul>
-          </div>
+            </div>
+          </details>
         </div>
       </header>
     </>
