@@ -32,18 +32,18 @@ export const getTimeDiffString = (time: number): string => {
   return `${value} ${unit} ago`;
 };
 
-export const dateToYYYYMMDD = (date: Date): string => {
-  return date.toISOString().slice(0, 10).replace(/-/g, '');
-};
+export const dateToYYYYMMDD = (date: Date): string =>
+  date.toISOString().slice(0, 10).replace(/-/g, '');
 
-export const dateToYearMonth = (date: Date): string => {
-  return date.toISOString().slice(0, 7);
-};
+export const dateToYearMonth = (date: Date): string =>
+  date.toISOString().slice(0, 7);
 
-export const monthToReadableString = (month: string): string => {
-  return new Date(month).toLocaleDateString(undefined, {
+export const monthToReadableString = (month: string): string =>
+  new Date(month).toLocaleDateString(undefined, {
     timeZone: 'UTC',
     year: 'numeric',
     month: 'short',
   });
-};
+
+export const dateToUnix = (date: Date): number =>
+  Math.floor(date.getTime() / 1000);

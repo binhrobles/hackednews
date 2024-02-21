@@ -16,16 +16,23 @@ export const putStories = async (stories: Story[]) => {
   const storyChunks = chunker(stories);
 
   for (const chunk of storyChunks) {
-    await client.send(
-      new BatchWriteCommand({
-        RequestItems: {
-          [Table.HackedNewsContent.tableName]: chunk.map((story) => ({
-            PutRequest: {
-              Item: story,
-            },
-          })),
-        },
-      })
-    );
+    try {
+      await client.send(
+        new BatchWriteCommand({
+          RequestItems: {
+            [Table.HackedNewsContent.tableName]: chunk.map(
+              (story) => ({
+                PutRequest: {
+                  Item: story,
+                },
+              })
+            ),
+          },
+        })
+      );
+    } catch (e) {
+      console.error(JSON.stringify(chunk, null, 2));
+      throw e;
+    }
   }
 };

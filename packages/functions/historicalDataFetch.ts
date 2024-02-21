@@ -1,5 +1,5 @@
 import { Story } from 'shared/types';
-import { dateToYearMonth } from 'shared/utils';
+import { dateToUnix, dateToYearMonth } from 'shared/utils';
 import {
   HCKRStoryResponse,
   fetchStoriesFromDate,
@@ -13,14 +13,15 @@ type HistoricalDataFetchEvent = {
 
 const HCKRStoryToStory = (
   story: HCKRStoryResponse,
-  yearMonth: string
+  yearMonth: string,
+  timeFallback: number
 ): Story => {
   return {
     id: parseInt(story.id),
     type: story.type,
-    time: parseInt(story.time),
+    time: story.date || timeFallback,
     comments: story.comments || 0,
-    score: story.points || 0,
+    score: parseInt(story.points) || 0,
     title: story.link_text,
     url: story.link,
     by: story.submitter,
@@ -33,24 +34,29 @@ export const handler = async (event: HistoricalDataFetchEvent) => {
   const startDate = new Date(event.startDate);
   const endDate = new Date(event.endDate);
 
-  const stories: Story[] = [];
   for (
     let date = startDate;
     date <= endDate;
     date.setDate(date.getDate() + 1)
   ) {
-    const yearMonth = dateToYearMonth(date);
+    let storiesForDate: HCKRStoryResponse[] = [];
+    try {
+      console.log(`fetching stories for ${date.toDateString()}`);
+      const yearMonth = dateToYearMonth(date);
+      const timeFallback = dateToUnix(date);
 
-    const storiesForDate: HCKRStoryResponse[] =
-      await fetchStoriesFromDate(date);
-    stories.push(
-      ...storiesForDate.map((story) =>
-        HCKRStoryToStory(story, yearMonth)
-      )
-    );
+      storiesForDate = await fetchStoriesFromDate(date);
+      const stories = storiesForDate
+      	// remove stories with uuid and non-existent ids
+        .filter((story) => story.id && !isNaN(story.id))
+        .map((story) =>
+          HCKRStoryToStory(story, yearMonth, timeFallback)
+        );
+      await putStories(stories);
+      console.log(`Stored ${stories.length} stories in the database`);
+    } catch (e) {
+      console.error(JSON.stringify(storiesForDate, null, 2));
+      throw e;
+    }
   }
-  console.log(`Received ${stories.length} stories from HN`);
-
-  await putStories(stories);
-  console.log(`Stored ${stories.length} stories in the database`);
 };
