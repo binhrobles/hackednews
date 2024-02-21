@@ -4,6 +4,12 @@
 
 Just another Hacker News remix, for learning. Wanted to see historically popular posts. Without paying for some SQL DB, historical aggregation queries would've been pretty hard / expensive, so just went with a simple month picker vs current feed.
 
+Consists of 3 pieces:
+
+- [Remix](/app) acting as the client + client APIs
+- [A Lambda](/packages/functions/liveDataFetch.ts) for periodically fetching the HN front page
+- [A Lambda](/packages/functions/historicalDataFetch.ts) for loading in bulk historical data
+
 Tech used:
 
 - [Remix](https://remix.run)

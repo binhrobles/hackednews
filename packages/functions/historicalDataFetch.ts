@@ -47,7 +47,7 @@ export const handler = async (event: HistoricalDataFetchEvent) => {
 
       storiesForDate = await fetchStoriesFromDate(date);
       const stories = storiesForDate
-      	// remove stories with uuid and non-existent ids
+        // remove stories with uuid and non-existent ids
         .filter((story) => story.id && !isNaN(story.id))
         .map((story) =>
           HCKRStoryToStory(story, yearMonth, timeFallback)

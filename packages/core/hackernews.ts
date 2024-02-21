@@ -23,7 +23,7 @@ export type HCKRStoryResponse = {
   link_text: string; // "Open Source Games",
   time: string; // "1708298421",
   link: string;
-  points?: number | null; // 45;
+  points?: number; // 45;
   id: string; // '39424566';
 };
 
