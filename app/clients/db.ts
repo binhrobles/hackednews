@@ -9,7 +9,7 @@ import { Table } from 'sst/node/table';
 import { RenderableStory, Story } from 'shared/types';
 import { getTimeDiffString } from 'shared/utils';
 
-const STORIES_PER_PAGE = 30;
+const STORIES_PER_PAGE = 50;
 
 // Create a DynamoDB client
 const ddbClient = new DynamoDBClient({

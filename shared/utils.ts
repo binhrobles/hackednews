@@ -7,6 +7,7 @@ export function* chunker<T>(
     yield arr.slice(i, i + chunkSize);
   }
 }
+
 export const getTimeDiffString = (time: number): string => {
   const timeDiff = new Date().getTime() - time * 1000;
 
