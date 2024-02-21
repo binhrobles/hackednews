@@ -39,7 +39,7 @@ export default function Navbar() {
                 type="month"
                 form="view-form"
                 name="month"
-                min="2020-01"
+                min="2012-01"
                 max={dateToYearMonth(new Date())}
                 onChange={(event) => {
                   document

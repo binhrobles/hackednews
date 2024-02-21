@@ -11,7 +11,10 @@ type HistoricalDataFetchEvent = {
   endDate: string;
 };
 
-const HCKRStoryToStory = (story: HCKRStoryResponse): Story => {
+const HCKRStoryToStory = (
+  story: HCKRStoryResponse,
+  yearMonth: string
+): Story => {
   return {
     id: parseInt(story.id),
     type: story.type,
@@ -21,9 +24,7 @@ const HCKRStoryToStory = (story: HCKRStoryResponse): Story => {
     title: story.link_text,
     url: story.link,
     by: story.submitter,
-    'year-month': dateToYearMonth(
-      new Date(parseInt(story.time) * 1000)
-    ),
+    'year-month': yearMonth,
   };
 };
 
@@ -38,9 +39,15 @@ export const handler = async (event: HistoricalDataFetchEvent) => {
     date <= endDate;
     date.setDate(date.getDate() + 1)
   ) {
+    const yearMonth = dateToYearMonth(date);
+
     const storiesForDate: HCKRStoryResponse[] =
       await fetchStoriesFromDate(date);
-    stories.push(...storiesForDate.map(HCKRStoryToStory));
+    stories.push(
+      ...storiesForDate.map((story) =>
+        HCKRStoryToStory(story, yearMonth)
+      )
+    );
   }
   console.log(`Received ${stories.length} stories from HN`);
 
