@@ -17,11 +17,11 @@ const HCKRStoryToStory = (
   timeFallback: number
 ): Story => {
   return {
-    id: parseInt(story.id),
+    id: Number(story.id),
     type: story.type,
     time: story.date || timeFallback,
     comments: story.comments || 0,
-    score: parseInt(story.points) || 0,
+    score: Number(story.points) || 0,
     title: story.link_text,
     url: story.link,
     by: story.submitter,
@@ -48,7 +48,7 @@ export const handler = async (event: HistoricalDataFetchEvent) => {
       storiesForDate = await fetchStoriesFromDate(date);
       const stories = storiesForDate
         // remove stories with uuid and non-existent ids
-        .filter((story) => story.id && !isNaN(story.id))
+        .filter((story) => story.id && !isNaN(Number(story.id)))
         .map((story) =>
           HCKRStoryToStory(story, yearMonth, timeFallback)
         );
