@@ -40,8 +40,7 @@ export default function Index() {
           <span>
             <Link className="text-base" to={story.url}>
               {story.title}
-            </Link>{' '}
-            {story.url ? `(${new URL(story.url).hostname})` : ''}
+            </Link>
           </span>
           <div className="text-xs flex space-x-2">
             <span className="flex text-accent">
@@ -61,9 +60,14 @@ export default function Index() {
 
               {story.score}
             </span>
-
             <span>submitted {story.timeDiff}</span>
             <span>|</span>
+            {story.url && (
+              <>
+                <span>{new URL(story.url).hostname}</span>
+                <span>|</span>
+              </>
+            )}
             <a
               href={`https://news.ycombinator.com/item?id=${story.id}`}
             >
