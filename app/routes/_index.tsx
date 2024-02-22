@@ -1,8 +1,5 @@
 import { useLoaderData, Link } from '@remix-run/react';
-import {
-  LoaderFunctionArgs,
-  json,
-} from '@remix-run/node';
+import { LoaderFunctionArgs, json } from '@remix-run/node';
 import {
   fetchRecentStories,
   fetchStoriesByMonth,
@@ -17,9 +14,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const month = url.searchParams.get('month');
 
   try {
-    const stories = month
-      ? await fetchStoriesByMonth(month)
-      : await fetchRecentStories();
+    const stories =
+      month && month.length > 0
+        ? await fetchStoriesByMonth(month)
+        : await fetchRecentStories();
     return json({ stories });
   } catch (e) {
     console.error(e);

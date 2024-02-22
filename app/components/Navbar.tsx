@@ -6,8 +6,6 @@ export default function Navbar() {
   const [searchParams, setSearchParams] = useSearchParams();
   const month = searchParams.get('month');
 
-  console.log(month);
-
   const [display, setDisplay] = useState(
     month && month.length > 0 ? monthToReadableString(month) : 'Today'
   );
@@ -21,7 +19,13 @@ export default function Navbar() {
         <div className="navbar-start">
           <button
             className="btn btn-ghost text-xl"
-            onClick={() => setSearchParams(undefined)}
+            onClick={() => {
+              document
+                .getElementById('month-dropdown')
+                ?.removeAttribute('open');
+              setDisplay('Today');
+              setSearchParams(undefined);
+            }}
           >
             Hacked News
           </button>
