@@ -6,8 +6,10 @@ export default function Navbar() {
   const [searchParams, setSearchParams] = useSearchParams();
   const month = searchParams.get('month');
 
+  console.log(month);
+
   const [display, setDisplay] = useState(
-    month ? monthToReadableString(month) : 'Today'
+    month && month.length > 0 ? monthToReadableString(month) : 'Today'
   );
 
   return (
@@ -26,36 +28,29 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-end">
-          <details
-            id="month-dropdown"
-            className="dropdown dropdown-end"
-          >
-            <summary className="btn btn-ghost text-xl">
+          <div className="relative inline-block">
+            <span className="btn btn-ghost pointer-events-none text-xl">
               {display}
-            </summary>
-            <div className="dropdown-content bg-base-100 rounded-box shadow z-[1]">
-              <input
-                className="input input-sm input-bordered"
-                type="month"
-                form="view-form"
-                name="month"
-                min="2012-01"
-                max={dateToYearMonth(new Date())}
-                onChange={(event) => {
-                  document
-                    .getElementById('month-dropdown')
-                    ?.removeAttribute('open');
-                  setDisplay(
-                    monthToReadableString(event.target.value)
-                  );
-                  setSearchParams((prev) => {
-                    prev.set('month', event.target.value);
-                    return prev;
-                  });
-                }}
-              />
-            </div>
-          </details>
+            </span>
+            <input
+              className="opacity-0 absolute w-full h-full left-0 top-0 box-border cursor-pointer cp:absolute cp:w-full cp:h-full"
+              type="month"
+              form="view-form"
+              name="month"
+              min="2012-01"
+              max={dateToYearMonth(new Date())}
+              onChange={(event) => {
+                document
+                  .getElementById('month-dropdown')
+                  ?.removeAttribute('open');
+                setDisplay(monthToReadableString(event.target.value));
+                setSearchParams((prev) => {
+                  prev.set('month', event.target.value);
+                  return prev;
+                });
+              }}
+            />
+          </div>
         </div>
       </header>
     </>
