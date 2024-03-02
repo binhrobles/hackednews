@@ -23,7 +23,7 @@ export function BackendStack({ stack }: StackContext) {
   });
 
   const liveDataFetch = new Cron(stack, 'LiveDataFetch', {
-    schedule: 'rate(30 minutes)',
+    schedule: 'rate(1 hour)',
     job: 'packages/functions/liveDataFetch.handler',
   });
   liveDataFetch.bind([table]);
