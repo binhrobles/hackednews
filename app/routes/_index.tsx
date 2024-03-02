@@ -72,19 +72,13 @@ export default function Index() {
 
               {story.score}
             </span>
-            <span>submitted {story.timeDiff}</span>
-            <span>|</span>
-            {story.url && (
-              <>
-                <span>{new URL(story.url).hostname}</span>
-                <span>|</span>
-              </>
-            )}
-            <a
-              href={`https://news.ycombinator.com/item?id=${story.id}`}
-            >
-              {story.comments} comments
-            </a>
+
+            <span className="text-pretty">
+              submitted {story.timeDiff} |{' '}
+              <a href={commentsLink(story.id)}>
+                {story.comments} comments
+              </a>
+            </span>
           </div>
         </div>
       ))}
