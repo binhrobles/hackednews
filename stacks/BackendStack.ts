@@ -16,6 +16,10 @@ export function BackendStack({ stack }: StackContext) {
         partitionKey: 'isEngaged',
         sortKey: 'time',
       },
+      StoriesByTimeIndex: {
+        partitionKey: 'type',
+        sortKey: 'time',
+      },
       TopStoriesByMonthIndex: {
         partitionKey: 'year-month',
         sortKey: 'score',
