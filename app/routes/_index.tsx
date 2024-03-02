@@ -9,6 +9,9 @@ import { RenderableStory } from 'shared/types';
 const scoreSort = (a: RenderableStory, b: RenderableStory) =>
   b.score - a.score;
 
+const commentsLink = (id: number) =>
+  `https://news.ycombinator.com/item?id=${id}`;
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const month = url.searchParams.get('month');
@@ -38,9 +41,18 @@ export default function Index() {
           className="py-2 flex flex-col border-secondary border-solid border-b-2 last:border-b-0"
         >
           <span>
-            <Link className="text-base" to={story.url}>
+            <Link
+              className="text-base"
+              to={story.url || commentsLink(story.id)}
+            >
               {story.title}
             </Link>
+            {story.url && (
+              <span className="text-xs">
+                {' '}
+                ({new URL(story.url).hostname})
+              </span>
+            )}
           </span>
           <div className="text-xs flex space-x-2">
             <span className="flex text-accent">
