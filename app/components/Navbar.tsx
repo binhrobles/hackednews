@@ -9,9 +9,12 @@ import {
 const RANGE_TODAY = 'today';
 const RANGE_WEEK = 'week';
 
+const LABEL_TODAY = 'Today';
+const LABEL_WEEK = 'The Week';
+
 const rangeToDisplay = (range: string) => {
-  if (range === RANGE_TODAY) return 'Today';
-  if (range === RANGE_WEEK) return 'This Week';
+  if (range === RANGE_TODAY) return LABEL_TODAY;
+  if (range === RANGE_WEEK) return LABEL_WEEK;
   if (isYearMonth(range)) return monthToReadableString(range);
   return 'Invalid Range';
 };
@@ -21,7 +24,7 @@ export default function Navbar() {
   const range = searchParams.get('range');
 
   const [display, setDisplay] = useState(
-    range && range.length > 0 ? rangeToDisplay(range) : 'Today'
+    range && range.length > 0 ? rangeToDisplay(range) : LABEL_TODAY
   );
 
   const handleRangeUpdate = (targetRange: string) => {
@@ -83,10 +86,28 @@ export default function Navbar() {
             </summary>
             <ul className="shadow menu dropdown-content z-[1] bg-base-100 rounded-box">
               <li>
-                <a>Item 1</a>
+                <div
+                  className="btn btn-ghost"
+                  onClick={() => {
+                    handleRangeUpdate(RANGE_TODAY);
+                  }}
+                >
+                  {LABEL_TODAY}
+                </div>
               </li>
               <li>
-                <div className="btn btn-ghost">A Month</div>
+                <div
+                  className="btn btn-ghost"
+                  onClick={() => {
+                    handleRangeUpdate(RANGE_WEEK);
+                  }}
+                >
+                  {LABEL_WEEK}
+                </div>
+              </li>
+              <li>
+                {/* TODO: this button doesn't receive hover events from under overlay */}
+                <div className="btn btn-ghost ">A Month</div>
                 <input
                   className="opacity-0 absolute w-full h-full left-0 top-0 box-border cursor-pointer cp:absolute cp:w-full cp:h-full"
                   type="month"
