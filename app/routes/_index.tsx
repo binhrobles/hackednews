@@ -1,10 +1,15 @@
-import { useLoaderData, Link } from '@remix-run/react';
+import {
+  useLoaderData,
+  Link,
+  useSearchParams,
+} from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
 import {
   fetchRecentStories,
   fetchStoriesByMonth,
 } from '~/clients/db';
 import { RenderableStory } from 'shared/types';
+import { isYearMonth } from 'shared/utils';
 
 const scoreSort = (a: RenderableStory, b: RenderableStory) =>
   b.score - a.score;
@@ -14,12 +19,12 @@ const commentsLink = (id: number) =>
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const month = url.searchParams.get('month');
+  const range = url.searchParams.get('range');
 
   try {
     const stories =
-      month && month.length > 0
-        ? await fetchStoriesByMonth(month)
+      range && isYearMonth(range)
+        ? await fetchStoriesByMonth(range)
         : await fetchRecentStories();
     return json({ stories });
   } catch (e) {
@@ -30,7 +35,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
-
   const scoreSortedStories = stories.sort(scoreSort);
 
   return (
