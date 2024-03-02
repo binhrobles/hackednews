@@ -26,6 +26,10 @@ const HCKRStoryToStory = (
     url: story.link,
     by: story.submitter,
     'year-month': yearMonth,
+    isEngaged:
+      Number(story.points) > 100 || Number(story.comments) > 100
+        ? 'y'
+        : undefined,
   };
 };
 

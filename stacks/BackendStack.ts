@@ -7,12 +7,13 @@ export function BackendStack({ stack }: StackContext) {
       score: 'number',
       time: 'number',
       type: 'string',
+      isEngaged: 'string',
       'year-month': 'string',
     },
     primaryIndex: { partitionKey: 'id' },
     globalIndexes: {
-      StoriesByTimeIndex: {
-        partitionKey: 'type', // just use story
+      EngagedStoriesByTimeIndex: {
+        partitionKey: 'isEngaged',
         sortKey: 'time',
       },
       TopStoriesByMonthIndex: {
