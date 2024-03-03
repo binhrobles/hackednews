@@ -17,8 +17,7 @@ const formatStories = (stories: HNStoryResponse[]): Story[] => {
     url: story.url,
     by: story.by,
     'year-month': dateToYearMonth(new Date(story.time * 1000)),
-    isEngaged:
-      story.score > 100 || story.descendants > 100 ? 'y' : undefined,
+    isEngaged: story.score > 100 ? 'y' : undefined,
   }));
 };
 
