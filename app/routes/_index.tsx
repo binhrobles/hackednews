@@ -1,15 +1,8 @@
-import {
-  useLoaderData,
-  Link,
-  useSearchParams,
-} from '@remix-run/react';
+import { useLoaderData, Link } from '@remix-run/react';
 import { LoaderFunctionArgs, json } from '@remix-run/node';
-import {
-  fetchRecentStories,
-  fetchStoriesByMonth,
-} from '~/clients/db';
+import { fetchStoriesFromRange } from '~/clients/db';
 import { RenderableStory } from 'shared/types';
-import { isYearMonth } from 'shared/utils';
+import { STORIES_PER_PAGE, Range } from 'shared/consts';
 
 const scoreSort = (a: RenderableStory, b: RenderableStory) =>
   b.score - a.score;
@@ -19,14 +12,15 @@ const commentsLink = (id: number) =>
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const range = url.searchParams.get('range');
+  const range = url.searchParams.get('range') || Range.TODAY;
+  const start = url.searchParams.get('start') || '';
+
+  // TODO: throw error / guard if bad param input
 
   try {
-    const stories =
-      range && isYearMonth(range)
-        ? await fetchStoriesByMonth(range)
-        : await fetchRecentStories();
-    return json({ stories });
+    const stories = await fetchStoriesFromRange(range, start);
+    const scoreSortedStories = stories.sort(scoreSort);
+    return json({ stories: scoreSortedStories });
   } catch (e) {
     console.error(e);
     throw json('Page Not Found', { status: 404 });
@@ -35,11 +29,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
-  const scoreSortedStories = stories.sort(scoreSort);
+
+  // TODO: add pagination
+  const page = stories.slice(0, STORIES_PER_PAGE);
 
   return (
     <section className="container mx-auto md:px-4">
-      {scoreSortedStories.map((story) => (
+      {page.map((story) => (
         <div
           key={story.id}
           className="py-2 flex flex-col border-secondary border-solid border-b-2 last:border-b-0"

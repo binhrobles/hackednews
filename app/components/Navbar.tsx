@@ -5,38 +5,47 @@ import {
   isYearMonth,
   monthToReadableString,
 } from 'shared/utils';
-
-const RANGE_TODAY = 'today';
-const RANGE_WEEK = 'week';
+import { Range } from 'shared/consts';
 
 const LABEL_TODAY = 'Today';
 const LABEL_WEEK = 'The Week';
 
-const rangeToDisplay = (range: string) => {
-  if (range === RANGE_TODAY) return LABEL_TODAY;
-  if (range === RANGE_WEEK) return LABEL_WEEK;
-  if (isYearMonth(range)) return monthToReadableString(range);
+const rangeToDisplay = (range: string, start: string) => {
+  if (range === Range.TODAY) return LABEL_TODAY;
+  if (range === Range.WEEK) return LABEL_WEEK;
+  // TODO: Range.MONTH w/out start
+  if (range === Range.MONTH && isYearMonth(start))
+    return monthToReadableString(start);
   return 'Invalid Range';
 };
 
 export default function Navbar() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const range = searchParams.get('range');
+  const range = searchParams.get('range') || Range.TODAY;
+  const start = searchParams.get('start') || '';
 
   const [display, setDisplay] = useState(
-    range && range.length > 0 ? rangeToDisplay(range) : LABEL_TODAY
+    rangeToDisplay(range, start)
   );
 
-  const handleRangeUpdate = (targetRange: string) => {
+  const handleRangeUpdate = (
+    targetRange: Range,
+    start: string = ''
+  ) => {
     document
       .getElementById('month-dropdown')
       ?.removeAttribute('open');
     document
       .getElementById('navbar-dropdown')
       ?.removeAttribute('open');
-    setDisplay(rangeToDisplay(targetRange));
+
+    setDisplay(rangeToDisplay(targetRange, start));
     setSearchParams((prev) => {
       prev.set('range', targetRange);
+
+      if (!start) prev.delete('start');
+      if (start) prev.set('start', start);
+
       return prev;
     });
   };
@@ -51,7 +60,7 @@ export default function Navbar() {
           <button
             className="btn btn-ghost text-lg"
             onClick={() => {
-              handleRangeUpdate(RANGE_TODAY);
+              handleRangeUpdate(Range.TODAY);
             }}
           >
             Hacked News
@@ -89,7 +98,7 @@ export default function Navbar() {
                 <div
                   className="btn btn-ghost"
                   onClick={() => {
-                    handleRangeUpdate(RANGE_TODAY);
+                    handleRangeUpdate(Range.TODAY);
                   }}
                 >
                   {LABEL_TODAY}
@@ -99,7 +108,7 @@ export default function Navbar() {
                 <div
                   className="btn btn-ghost"
                   onClick={() => {
-                    handleRangeUpdate(RANGE_WEEK);
+                    handleRangeUpdate(Range.WEEK);
                   }}
                 >
                   {LABEL_WEEK}
@@ -116,7 +125,10 @@ export default function Navbar() {
                   min="2012-01"
                   max={dateToYearMonth(new Date())}
                   onChange={(event) => {
-                    handleRangeUpdate(event.target.value);
+                    handleRangeUpdate(
+                      Range.MONTH,
+                      event.target.value
+                    );
                   }}
                 />
               </li>
