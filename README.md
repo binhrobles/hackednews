@@ -2,7 +2,7 @@
 
 [hn.binhrobles.com](https://hn.binhrobles.com)
 
-Just another Hacker News remix, for learning. Wanted to see historically popular posts. Without paying for some SQL DB, historical aggregation queries would've been pretty hard / expensive, so just went with a simple month picker vs current feed.
+Just another Hacker News remix, for learning. Wanted to see historically popular posts.
 
 Consists of 3 pieces:
 
