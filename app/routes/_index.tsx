@@ -16,11 +16,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const start = url.searchParams.get('start') || '';
 
   // TODO: throw error / guard if bad param input
+  // TODO: add pagination
 
   try {
     const stories = await fetchStoriesFromRange(range, start);
     const scoreSortedStories = stories.sort(scoreSort);
-    return json({ stories: scoreSortedStories });
+    const page = scoreSortedStories.slice(0, STORIES_PER_PAGE);
+    return json({ stories: page });
   } catch (e) {
     console.error(e);
     throw json('Page Not Found', { status: 404 });
@@ -30,12 +32,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index() {
   const { stories } = useLoaderData<typeof loader>();
 
-  // TODO: add pagination
-  const page = stories.slice(0, STORIES_PER_PAGE);
-
   return (
     <section className="container mx-auto md:px-4">
-      {page.map((story) => (
+      {stories.map((story) => (
         <div
           key={story.id}
           className="py-2 flex flex-col border-secondary border-solid border-b-2 last:border-b-0"
