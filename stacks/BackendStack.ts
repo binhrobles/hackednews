@@ -12,14 +12,19 @@ export function BackendStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: 'id' },
     globalIndexes: {
+      // isEngaged is set to 'y' on stories that have reached
+      // a score of ENGAGEMENT_THRESHOLD, reducing the amount of data
+      // that needs to be scanned on "past week" or "past month" queries
       EngagedStoriesByTimeIndex: {
         partitionKey: 'isEngaged',
         sortKey: 'time',
       },
+      // used to fetch stories from the last x hours
       StoriesByTimeIndex: {
         partitionKey: 'type',
         sortKey: 'time',
       },
+      // used to fetch top stories from a specific month
       TopStoriesByMonthIndex: {
         partitionKey: 'year-month',
         sortKey: 'score',

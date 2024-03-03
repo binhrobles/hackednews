@@ -57,14 +57,7 @@ export default function Navbar() {
 
       <header className="navbar p-0">
         <div className="navbar-start">
-          <button
-            className="btn btn-ghost text-lg"
-            onClick={() => {
-              handleRangeUpdate(Range.TODAY);
-            }}
-          >
-            Hacked News
-          </button>
+          <div className="btn btn-ghost text-lg">Hacked News</div>
         </div>
 
         <div className="navbar-end">
