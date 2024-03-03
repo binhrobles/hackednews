@@ -5,6 +5,7 @@ import {
 import { putStories } from 'packages/core/db';
 import { Story } from 'shared/types';
 import { dateToYearMonth } from 'shared/utils';
+import { ENGAGEMENT_THRESHOLD } from 'shared/consts';
 
 const formatStories = (stories: HNStoryResponse[]): Story[] => {
   return stories.map((story) => ({
@@ -17,7 +18,7 @@ const formatStories = (stories: HNStoryResponse[]): Story[] => {
     url: story.url,
     by: story.by,
     'year-month': dateToYearMonth(new Date(story.time * 1000)),
-    isEngaged: story.score > 100 ? 'y' : undefined,
+    isEngaged: story.score > ENGAGEMENT_THRESHOLD ? 'y' : undefined,
   }));
 };
 

@@ -12,3 +12,5 @@ export const DAY_MS = DAY_S * 1000;
 export const WEEK_S = 7 * DAY_S;
 
 export const STORIES_PER_PAGE = 50;
+
+export const ENGAGEMENT_THRESHOLD = 300;
