@@ -12,11 +12,11 @@
 
 ### Mar 2, 2024
 
-Work to support Top Posts by Week (and possibly Month in the future)
-
 #### Goal
 
-There are ~150 new posts a day, and neither of the indices can query by time AND score, so getting the last 7 days of data from DDB would look like a query returning ~1050 records, sorting by score, and then returning 50.
+Support Top Posts by Week (and possibly Month in the future)
+
+Problem: There are ~150 new posts a day, and neither of the indices can query by time AND score, so getting the last 7 days of data from DDB would look like a query returning ~1050 records, sorting by score, and then returning 50.
 
 #### Work Done
 
