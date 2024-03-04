@@ -1,3 +1,5 @@
+import { DAY_MS, HOUR_MS, MINUTE_MS } from './consts';
+
 // generator yielding every chunkSize elements
 export function* chunker<T>(
   arr: T[],
@@ -14,16 +16,16 @@ export const getTimeDiffString = (time: number): string => {
   let value: number;
   let unit: string;
   switch (true) {
-    case timeDiff < 1000 * 60 * 60:
-      value = Math.floor(timeDiff / (1000 * 60));
+    case timeDiff < HOUR_MS:
+      value = Math.floor(timeDiff / MINUTE_MS);
       unit = 'minute';
       break;
-    case timeDiff < 1000 * 60 * 60 * 24:
-      value = Math.floor(timeDiff / (1000 * 60 * 60));
+    case timeDiff < DAY_MS:
+      value = Math.floor(timeDiff / HOUR_MS);
       unit = 'hour';
       break;
     default:
-      value = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      value = Math.floor(timeDiff / DAY_MS);
       unit = 'day';
       break;
   }
@@ -31,6 +33,10 @@ export const getTimeDiffString = (time: number): string => {
 
   return `${value} ${unit} ago`;
 };
+
+// check if a string is in the format of YYYY-MM
+export const isYearMonth = (str: string): boolean =>
+  /^\d{4}-\d{2}$/.test(str);
 
 export const dateToYYYYMMDD = (date: Date): string =>
   date.toISOString().slice(0, 10).replace(/-/g, '');

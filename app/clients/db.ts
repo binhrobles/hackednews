@@ -2,14 +2,19 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   QueryCommand,
+  QueryCommandInput,
   QueryCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 import { Table } from 'sst/node/table';
 
 import { RenderableStory, Story } from 'shared/types';
-import { getTimeDiffString } from 'shared/utils';
-
-const STORIES_PER_PAGE = 50;
+import { getTimeDiffString, isYearMonth } from 'shared/utils';
+import {
+  DAY_S,
+  WEEK_S,
+  STORIES_PER_PAGE,
+  Range,
+} from 'shared/consts';
 
 // Create a DynamoDB client
 const ddbClient = new DynamoDBClient({
@@ -17,14 +22,55 @@ const ddbClient = new DynamoDBClient({
 });
 const client = DynamoDBDocumentClient.from(ddbClient);
 
-// fetch stories from last 24 hours
-export const fetchRecentStories = async () => {
-  const now = Math.floor(Date.now() / 1000);
-  const yesterday = now - 24 * 60 * 60;
+const queryCommandFromRange = (
+  range: string,
+  start: string
+): QueryCommand => {
+  let queryCommandInput: QueryCommandInput = {
+    TableName: Table.HackedNewsContent.tableName,
+  };
 
-  const { Items }: QueryCommandOutput = await client.send(
-    new QueryCommand({
-      TableName: Table.HackedNewsContent.tableName,
+  // populate Query command input based on the range
+  if (range === Range.WEEK) {
+    // fetch all stories from the last week
+    // will need to cull down to page limit
+    const now = Math.floor(Date.now() / 1000);
+    const lastWeek = now - WEEK_S;
+    queryCommandInput = {
+      ...queryCommandInput,
+      IndexName: 'EngagedStoriesByTimeIndex',
+      KeyConditionExpression:
+        'isEngaged = :isEngaged AND #time > :time',
+      ExpressionAttributeValues: {
+        ':isEngaged': 'y',
+        ':time': lastWeek,
+      },
+      ExpressionAttributeNames: {
+        '#time': 'time',
+      },
+    };
+  } else if (range === Range.MONTH && isYearMonth(start)) {
+    // fetch top stories from the specified month
+    queryCommandInput = {
+      ...queryCommandInput,
+      IndexName: 'TopStoriesByMonthIndex',
+      KeyConditionExpression: '#ym = :month',
+      ExpressionAttributeValues: {
+        ':month': start,
+      },
+      ExpressionAttributeNames: {
+        '#ym': 'year-month',
+      },
+      ScanIndexForward: false,
+      Limit: STORIES_PER_PAGE,
+    };
+  } else {
+    // implicitly range === Range.TODAY
+    // fetch stories from last 24 hours
+    const now = Math.floor(Date.now() / 1000);
+    const yesterday = now - DAY_S;
+    queryCommandInput = {
+      ...queryCommandInput,
       IndexName: 'StoriesByTimeIndex',
       KeyConditionExpression: '#type = :type AND #time > :time',
       ExpressionAttributeValues: {
@@ -36,40 +82,22 @@ export const fetchRecentStories = async () => {
         '#time': 'time',
       },
       Limit: STORIES_PER_PAGE,
-    })
-  );
+    };
+  }
 
-  const stories = Items as Story[];
-  const renderableStories: RenderableStory[] = stories.map(
-    (story) => {
-      return {
-        ...story,
-        timeDiff: getTimeDiffString(story.time),
-      };
-    }
-  );
-
-  return renderableStories;
+  return new QueryCommand(queryCommandInput);
 };
 
-// fetch top stories from the specified month
-export const fetchStoriesByMonth = async (month: string) => {
+export const fetchStoriesFromRange = async (
+  range: string,
+  start: string
+) => {
+  const queryCommand = queryCommandFromRange(range, start);
   const { Items }: QueryCommandOutput = await client.send(
-    new QueryCommand({
-      TableName: Table.HackedNewsContent.tableName,
-      IndexName: 'TopStoriesByMonthIndex',
-      KeyConditionExpression: '#ym = :month',
-      ExpressionAttributeValues: {
-        ':month': month,
-      },
-      ExpressionAttributeNames: {
-        '#ym': 'year-month',
-      },
-      Limit: STORIES_PER_PAGE,
-      ScanIndexForward: false,
-    })
+    queryCommand
   );
 
+  // package them up and return them
   const stories = Items as Story[];
   const renderableStories: RenderableStory[] = stories.map(
     (story) => {

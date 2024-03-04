@@ -5,6 +5,7 @@ import {
   fetchStoriesFromDate,
 } from '../core/hackernews';
 import { putStories } from '../core/db';
+import { ENGAGEMENT_THRESHOLD } from 'shared/consts';
 
 type HistoricalDataFetchEvent = {
   startDate: string;
@@ -26,6 +27,8 @@ const HCKRStoryToStory = (
     url: story.link,
     by: story.submitter,
     'year-month': yearMonth,
+    isEngaged:
+      Number(story.points) > ENGAGEMENT_THRESHOLD ? 'y' : undefined,
   };
 };
 
