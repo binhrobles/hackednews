@@ -1,15 +1,22 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type {
+  LinksFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from '@remix-run/node';
+import { json } from '@remix-run/node';
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react';
 
 import styles from './tailwind.css';
 
 import Navbar from '~/components/Navbar';
+import { THEME_COOKIE, parseTheme } from '~/components/ThemeToggle';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
@@ -22,9 +29,18 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const cookie = request.headers.get('Cookie') || '';
+  const match = cookie.match(
+    new RegExp(`(?:^|;\\s*)${THEME_COOKIE}=([^;]+)`)
+  );
+  return json({ theme: parseTheme(match?.[1]) });
+};
+
 export default function App() {
+  const { theme } = useLoaderData<typeof loader>();
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -35,7 +51,7 @@ export default function App() {
         <Links />
       </head>
       <body className="container mx-auto px-8">
-        <Navbar />
+        <Navbar theme={theme} />
         <Outlet />
         <footer className="footer footer-center p-2">
           <a
