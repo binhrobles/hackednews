@@ -4,7 +4,7 @@ import plugin from 'tailwindcss/plugin';
 export default {
   content: ['./app/**/*.{ts,tsx}'],
   daisyui: {
-    themes: ['business'],
+    themes: ['business', 'corporate'],
   },
   plugins: [
     require('daisyui'),

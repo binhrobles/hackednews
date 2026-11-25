@@ -6,6 +6,7 @@ import {
   monthToReadableString,
 } from 'shared/utils';
 import { Range } from 'shared/consts';
+import ThemeToggle, { type Theme } from '~/components/ThemeToggle';
 
 const LABEL_TODAY = 'Today';
 const LABEL_WEEK = 'The Week';
@@ -19,7 +20,7 @@ const rangeToDisplay = (range: string, start: string) => {
   return 'Invalid Range';
 };
 
-export default function Navbar() {
+export default function Navbar({ theme }: { theme: Theme }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const range = searchParams.get('range') || Range.TODAY;
   const start = searchParams.get('start') || '';
@@ -127,6 +128,7 @@ export default function Navbar() {
               </li>
             </ul>
           </details>
+          <ThemeToggle initialTheme={theme} />
         </div>
       </header>
     </>
